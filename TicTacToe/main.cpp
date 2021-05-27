@@ -2,7 +2,7 @@
 
 using namespace std;
 
-enum BlockState { nought, available, cross };
+enum BlockState { available, nought, cross };
 
 BlockState Grid[3][3];
 
@@ -11,35 +11,62 @@ void ResetBoard();
 void Place(BlockState, int);
 bool IsAvailable(int);
 bool CheckWin();
+void PlayerTurn(BlockState);
 
+void AiTurn(BlockState symbol);
+
+bool vsAI = false;
 int main() {
+    cout << "Tic Tac Toe" << endl;
+    cout << "How many players? \n1 vs CPU \n2 HeadsUp" << endl;
+
+    int input;
+    cin >> input;
+    if(input == 1)
+        vsAI = true;
 
     ResetBoard();
+
     do{
-        int input;
-        do {
-            cout << "Where would Player X like to place? index 1 - 9: ";
-            cin >> input;
-        } while (!(input > 0 && input < 10) || !IsAvailable(input));
-        Place(cross, input);
+        PlayerTurn(nought);
         if(CheckWin()) {
-            cout << "Player X wins.";
+            cout << "Player " << nought <<" wins." << endl;
             break;
         }
         PrintGrid();
-        do {
-            cout << "Where would Player O like to place? index 1 - 9: ";
-            cin >> input;
-        } while (!(input > 0 && input < 10) || !IsAvailable(input));
-        Place(nought, input);
+
+        if(vsAI)
+            AiTurn(cross);
+        else
+            PlayerTurn(cross);
+
         if(CheckWin()) {
-            cout << "Player O wins.";
+            cout << "Player " << cross <<" wins." << endl;
             break;
         }
         PrintGrid();
+
     }while(!CheckWin());
     PrintGrid();
     return 0;
+}
+
+void AiTurn(BlockState symbol) {
+    int randomLocation;
+    do{
+        randomLocation = rand() % 9 + 1;
+    }while(!IsAvailable(randomLocation));
+    cout << "AI(Player " << symbol <<") placed at position :" << randomLocation << endl;
+    Place(symbol, randomLocation);
+}
+
+void PlayerTurn(BlockState player) {
+    int input;
+    do {
+        cout << "Where would Player " << player <<" like to place? index 1 - 9: ";
+        cin >> input;
+    } while (!(input > 0 && input < 10) || !IsAvailable(input));
+    Place(player, input);
 }
 
 bool CheckWin(){
@@ -53,6 +80,7 @@ bool CheckWin(){
 }
 
 void Place(BlockState newState, int index){
+    if(newState == available) return;
     if(IsAvailable(index))
         Grid[--index / 3][index % 3] = newState;
 
@@ -74,7 +102,6 @@ void PrintGrid() {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             switch (Grid[i][j]) {
-
                 case nought: cout << "O";
                     break;
                 case available: cout << " ";
@@ -82,7 +109,6 @@ void PrintGrid() {
                 case cross: cout << "X";
                     break;
             }
-
             if(j != 2)
                 cout << "|";
         }
