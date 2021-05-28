@@ -42,15 +42,13 @@ string AsBinaryOperations(int value){
 }
 
 string AsBinaryModulo(int value){
-
     if(value == 0) return "0b0";
 
     int enumerator = 0;
     int binary[32];
     string response = "0b";
 
-    for (int i = 0; value > 0; i++)
-    {
+    for (int i = 0; value > 0; i++) {
         binary[i] = value % 2;
         value /= 2;
         enumerator++;
@@ -58,6 +56,5 @@ string AsBinaryModulo(int value){
 
     for (int i = enumerator-1;i >= 0;i--)
         response += to_string(binary[i]);
-
     return response;
 }
