@@ -4,18 +4,17 @@ using namespace std;
 
 enum BlockState { available, nought, cross };
 
-BlockState Grid[3][3];
-
 void PrintGrid();
 void ResetBoard();
 void Place(BlockState, int);
 bool IsAvailable(int);
 bool CheckWin();
 void PlayerTurn(BlockState);
-
 void AiTurn(BlockState symbol);
 
+BlockState Grid[3][3];
 bool vsAI = false;
+
 int main() {
     cout << "Tic Tac Toe" << endl;
     cout << "How many players? \n1 vs CPU \n2 HeadsUp" << endl;
@@ -83,7 +82,6 @@ void Place(BlockState newState, int index){
     if(newState == available) return;
     if(IsAvailable(index))
         Grid[--index / 3][index % 3] = newState;
-
 }
 
 bool IsAvailable(int index){
@@ -102,12 +100,9 @@ void PrintGrid() {
     for (int i = 0; i < 3; ++i) {
         for (int j = 0; j < 3; ++j) {
             switch (Grid[i][j]) {
-                case nought: cout << "O";
-                    break;
-                case available: cout << " ";
-                    break;
-                case cross: cout << "X";
-                    break;
+                case nought: cout << "O"; break;
+                case available: cout << " "; break;
+                case cross: cout << "X"; break;
             }
             if(j != 2)
                 cout << "|";
@@ -117,5 +112,3 @@ void PrintGrid() {
     }
     cout << endl;
 }
-
-

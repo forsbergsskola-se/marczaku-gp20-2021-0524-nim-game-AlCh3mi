@@ -4,10 +4,8 @@ using namespace std;
 class Nim{
 
 public:
-    Nim();
     Nim(int);
     int GetMatches();
-
     void TakeMatches(int);
     bool ValidEntry(int);
     void PlayerTurn();
@@ -21,6 +19,15 @@ private:
 
 int main() {
     Nim nim(24);
+    cout << "Nim" << endl;
+    cout << "Press 1 for vs CPU" << endl;
+    cout << "Press 2 for 2 Player" << endl;
+
+    int input;
+    cin >> input;
+    if(input == 1)
+        nim.AI = true;
+
     while(nim.GetMatches() > 0){
 
         cout << "PLAYER 1: "; //Player 1 Turn
@@ -35,30 +42,22 @@ int main() {
         cout << "PLAYER 2: "; //Player 2 Turn
         if(nim.AI){
             int AIDraw = nim.AIDraw();
-            cout << "AI drew " << AIDraw << " matches.";
+            cout << "AI drew " << AIDraw << " matches." << endl;
             nim.TakeMatches(AIDraw);
         }else
-        {
             nim.PlayerTurn();
-            if(nim.GetMatches() <= 0) { // Lose
-                cout << "0 Matches left" << endl;
-                cout << "Player 1 Wins!!";
-                break;
-            }
+
+        if(nim.GetMatches() <= 0) { // Lose
+            cout << "0 Matches left" << endl;
+            cout << "Player 1 Wins!!" << endl;
+            break;
         }
         nim.ShowMatches();
     }
 }
 
-Nim::Nim(){
-    cout << "New Nim Game Started vs AI. " << GetMatches() << " matches remaining!";
-    AI = true;
-}
-
 Nim::Nim(int ma) {
     matches = ma;
-    cout << "New Nim Game Started. " << GetMatches() << " matches remaining!" << endl;
-    cout << DisplayMatches();
 }
 
 int Nim::GetMatches(){
@@ -91,7 +90,10 @@ int Nim::AIDraw() {
     int matchesToDraw;
     switch (matches) {
         default:matchesToDraw = rand() % 3 + 1; break;
-        case 5: matchesToDraw = 1; break;
+        case 8: matchesToDraw = 3; break;
+        case 7: matchesToDraw = 2; break;
+        case 6: matchesToDraw = 1; break;
+        //case 5: matchesToDraw = 1; break; //screwed either way
         case 4: matchesToDraw = 3; break;
         case 3: matchesToDraw = 2; break;
         case 2: matchesToDraw = 1; break;
@@ -111,5 +113,3 @@ string Nim::DisplayMatches(){
     }
     return response;
 }
-
-
