@@ -3,4 +3,4 @@ project(Nim)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Nim main.cpp)
+add_executable(Nim Nim.cpp)
